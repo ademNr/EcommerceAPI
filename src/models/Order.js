@@ -3,7 +3,7 @@
 const mongoose = require("mongoose"); 
 
 
-const cartSchema = new mongoose.Schema({
+const orderSchema = new mongoose.Schema({
     
     
     userId:{
@@ -51,4 +51,4 @@ const cartSchema = new mongoose.Schema({
 },
 {timestamps:true}
 );
-module.exports = mongoose.model('Cart' , cartSchema) ;
+module.exports = mongoose.model('Ordeer' , orderSchema) ;

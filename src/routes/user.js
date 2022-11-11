@@ -1,25 +1,23 @@
 const router = require("express").Router(); 
+const { verifyTokenAndAuth,verifyTokenAndAdmin} = require("../middlewares/verifyToken");
+const userController = require("../controllers/userController"); 
 
-const {verifyToken, verifyTokenAndAuth} = require("../middlewares/verifyToken");
-const bcrypt = require('bcryptjs');
-const User = require("../models/User");
 
-// updating user info 
-router.put("/:id",verifyTokenAndAuth, async (req,res)=>{
-    const salt = await bcrypt.genSalt(10);
-    if(req.body.password){
-        req.body.password = await bcrypt.hash(req.body.password,salt);
-    }
-    try{
-        const updatedUser = await User.findByIdAndUpdate(req.params.id, {$set : req.body}, {new: true});
-        res.status(200).json(updatedUser); 
 
-    }catch(err){
-        res.status(400).json(err); 
+// updating user info : works
+router.put("/:id",verifyTokenAndAuth, userController.updateUser )
 
-    }
 
-} )
+//deleting a user by id : test it again
+router.delete("/:id", verifyTokenAndAuth, userController.deleteUser);
+
+//get user by id  : works
+router.get("/:id", verifyTokenAndAdmin, userController.getUsers);
+
+
+//get all users  : works
+router.get("/", verifyTokenAndAdmin, userController.getAllUsers);
+
 
 
 
