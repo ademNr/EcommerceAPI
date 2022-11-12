@@ -9,7 +9,9 @@ const registerUser = async (req, res)=>{
 
     // data validation 
      const {error}=  registerValidation(req.body);
+     console.log(error);
      if(error) return res.status(400).json(error.details[0].message);
+
      //checking for existing email 
      const emailExist = await User.findOne({email: req.body.email});
      if(emailExist){
@@ -43,7 +45,7 @@ const loginUser = async (req,res)=>{
 
     // DATA validation
     const {error} = loginValidation(req.body);
-    if(error) return res.status(400).send(error.details[0].message); 
+    if(error) return res.status(400).json(error.details[0].message); 
   
      // checking for email existence
      const user = await User.findOne({email: req.body.email});

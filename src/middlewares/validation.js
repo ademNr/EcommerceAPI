@@ -11,7 +11,7 @@ const registerValidation= (data)=>{
 
     });
 
-    return validationSchema.validate(data);
+    return validationSchema.validate(data)
     
 }
 

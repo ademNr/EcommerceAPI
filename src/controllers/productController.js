@@ -77,7 +77,7 @@ const updateProduct = async (req,res)=>{
 const deleteProduct = async (req, res)=>{
     try{
         await Product.findByIdAndDelete(req.params.id);
-        res.status(200).json("Product has been deleter"); 
+        res.status(200).send("Product has been deleter"); 
 
     }catch(err){
         res.status(400).json(err);
