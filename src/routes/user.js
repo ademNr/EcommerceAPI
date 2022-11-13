@@ -1,5 +1,5 @@
 const router = require("express").Router(); 
-const { verifyTokenAndAuth,verifyTokenAndAdmin} = require("../middlewares/verifyToken");
+const { verifyTokenAndAuth,verifyTokenAndAdmin, verifyToken} = require("../middlewares/verifyToken");
 const userController = require("../controllers/userController"); 
 
 
@@ -8,7 +8,7 @@ const userController = require("../controllers/userController");
 router.put("/:id",verifyTokenAndAuth, userController.updateUser )
 
 
-//deleting a user by id : test it again
+//deleting a user by id : works
 router.delete("/:id", verifyTokenAndAuth, userController.deleteUser);
 
 //get user by id  : works

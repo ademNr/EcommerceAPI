@@ -8,7 +8,7 @@ const orderSchema = new mongoose.Schema({
     
     userId:{
         type: String, 
-        required: true
+        required : true
     },
     
     
@@ -28,7 +28,7 @@ const orderSchema = new mongoose.Schema({
 
     amount:{
         type: Number ,
-        require : true ,
+        required : true ,
     },
     
     address :{
@@ -51,4 +51,4 @@ const orderSchema = new mongoose.Schema({
 },
 {timestamps:true}
 );
-module.exports = mongoose.model('Ordeer' , orderSchema) ;
+module.exports = mongoose.model('Order' , orderSchema) ;

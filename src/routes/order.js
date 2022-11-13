@@ -9,7 +9,7 @@ router.post("/", verifyTokenAndAuth, orderController.createOrder);
 router.put("/", verifyTokenAndAdmin, orderController.updateOrder); 
 
 // get order by id 
-router.get("/find/:userId", verifyTokenAndAuth, orderController.getUserOrders);
+router.get("/:userId", verifyTokenAndAuth, orderController.getUserOrders);
 
 //get all orders 
 router.get("/", verifyTokenAndAdmin, orderController.getAllOrders);

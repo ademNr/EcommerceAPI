@@ -1,12 +1,17 @@
 const jwt = require('jsonwebtoken'); 
 
+const dotenv = require("dotenv");
+dotenv.config() ;
 
 
 //
 const verifyToken = (req,res, next)=>{
     
-    const token = req.header('auth-token'); 
-    if(!token) return res.status(401).json('access denied'); 
+    let token ; 
+    if(req.headers.authtoken && req.headers.authtoken.startsWith('Bearer')){
+        token = req.headers.authtoken.split(' ')[1];
+    }
+    if(!token) return res.status(401).json({message: "access denied"});
 
     try{
 
@@ -24,7 +29,7 @@ const verifyToken = (req,res, next)=>{
 //
 const verifyTokenAndAuth = (req,res, next)=>{
     verifyToken(req,res,()=>{
-        if( req.params.id == req.user.id || req.user.isAdmin){
+        if( req.params.id == req.user.id || req.user.isAdmin ){
             next(); 
         }else{
             return res.status(403).json("you're not authorized ");
@@ -37,10 +42,11 @@ const verifyTokenAndAuth = (req,res, next)=>{
 
 const verifyTokenAndAdmin = (req,res, next)=>{
     verifyToken(req,res,()=>{
-        if(  req.user.isAdmin){
+        
+        if(req.user.isAdmin){
             next(); 
         }else{
-            return res.status(403).json("you're not authorized ");
+            return res.status(403).json("you're not authorized");
         }
 
     });

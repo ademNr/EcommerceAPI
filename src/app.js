@@ -2,6 +2,10 @@ const express = require("express");
 const cors = require("cors"); 
 const helmet = require('helmet');
 const morgan = require('morgan');
+const rateLimit = require("express-rate-limit");
+const mongoSanitize = require("express-mongo-sanitize");
+const xss = require("xss-clean");
+const hpp = require("hpp");
 const app = express() ;
 
 
@@ -9,12 +13,37 @@ const bodyParser = require("body-parser");
 
 
 
-//Middlewares : 
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
-app.use(helmet());
-app.use(morgan('dev'));
+// Global Middlewares : 
+
+   // http headers security
+   app.use(helmet());
+ // limit requests from same api : prevents dos and bruteforce attacks
+ const limiter = rateLimit({
+   max: 100 ,
+   windowMs: 60*60*1000,
+   message: 'too many requests for this ip try again in an our'
+ });
+ app.use("/api",limiter);
+
+ //body-parser
+ app.use(express.json());
+ app.use(bodyParser.urlencoded({ extended: true }));
+
+ //data sanitization against noSQL injection 
+ app.use(mongoSanitize()); 
+ // Data sanitization againt XSS 
+ app.use(xss());
+
+ //preventing http parameter pollution 
+ app.use(hpp());
+
+ // cors 
+ app.use(cors());
+
+ //only for production
+ app.use(morgan('dev'));
+
+
 
 //importing routes
 const authRoute = require('./routes/auth');
