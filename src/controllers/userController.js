@@ -24,7 +24,7 @@ const updateUser = async (req,res)=>{
 const deleteUser = async (req, res)=>{
     try{
         await User.findByIdAndDelete(req.params.id);
-        res.status(200).json("user has been deleter"); 
+        res.status(200).json("user has been deleted"); 
 
     }catch(err){
         res.status(400).json(err);

@@ -3,13 +3,13 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const {registerValidation, loginValidation} = require("../middlewares/validation");
+const { isError } = require('@hapi/joi');
 
 
 const registerUser = async (req, res)=>{
 
     // data validation 
      const {error}=  registerValidation(req.body);
-     console.log(error);
      if(error) return res.status(400).json(error.details[0].message);
 
      //checking for existing email 
@@ -30,7 +30,10 @@ const registerUser = async (req, res)=>{
 
     try{
         const savedUser = await user.save(); 
-        res.status(200).json(savedUser); 
+
+        const token  = jwt.sign({id:user._id}, process.env.TOKEN_SECRET);
+        res.header('authtoken', token).json(token); 
+        res.status(200).json(savedUser); //
         
 
   }catch(err){
@@ -57,9 +60,8 @@ const loginUser = async (req,res)=>{
        if(!validPass) return res.status(400).send('wrong password');
   
        // create and assign token 
-       const token  = jwt.sign({_id:user._id, isAdmin:user.isAdmin}, process.env.TOKEN_SECRET);
-      
-       res.header('auth-token', token).json(token); 
+       const token  = jwt.sign({id:user._id, isAdmin: user.isAdmin}, process.env.TOKEN_SECRET);
+       res.header('authtoken', token).json({message:token}); 
        
   
   
