@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const {registerValidation, loginValidation} = require("../middlewares/validation");
 const { isError } = require('@hapi/joi');
-
+const cookie = require("cookie-parser");
 
 const registerUser = async (req, res)=>{
 
